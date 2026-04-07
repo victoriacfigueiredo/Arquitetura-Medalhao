@@ -1,0 +1,28 @@
+resources:
+  jobs:
+    Job_Arq_Medalhao:
+      name: Job_Arq_Medalhao
+      schedule:
+        quartz_cron_expression: 38 0 13 * * ?
+        timezone_id: America/Sao_Paulo
+        pause_status: UNPAUSED
+      tasks:
+        - task_key: bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/victoriafigueiredo62@gmail.com/camada_bronze
+            source: WORKSPACE
+        - task_key: silver
+          depends_on:
+            - task_key: bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/victoriafigueiredo62@gmail.com/camada_silver
+            source: WORKSPACE
+        - task_key: gold
+          depends_on:
+            - task_key: silver
+          notebook_task:
+            notebook_path: /Workspace/Users/victoriafigueiredo62@gmail.com/camada_gold
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
